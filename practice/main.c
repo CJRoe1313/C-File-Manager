@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 int readFile(char *path);
 
@@ -10,10 +11,11 @@ int main(void)
     char *input = NULL;
     int choice = 0;
     char path[1024] = {0};
+    bool isRunning = true;
 
     printf("**** C FILE MANAGER ****\n");
 
-    do
+    while (isRunning)
     {
 
         printf("Choose an option:\n");
@@ -29,8 +31,7 @@ int main(void)
             readFile(path);
             break;
         }
-
-    } while (choice != 3);
+    }
 
     printf("Thank you for using C FILE MANAGER\n");
 
@@ -54,13 +55,13 @@ int readFile(char *path)
         printf("Failed to open file\n");
         return 1;
     }
-    else
-    {
-        printf("File opened succesfully\n");
 
-        while (fgets(data, 1024, fp) != NULL)
-        {
-            printf("%s\n", data);
-        }
+    printf("File opened succesfully\n\n");
+
+    while (fgets(data, 1024, fp) != NULL)
+    {
+        printf("%s\n", data);
     }
+    fclose(fp);
+    return 0;
 }
