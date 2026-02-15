@@ -4,6 +4,7 @@
 #include <stdbool.h>
 
 int readFile(char *path);
+int writeFile(char *path);
 
 int main(void)
 {
@@ -29,6 +30,9 @@ int main(void)
         {
         case 1:
             readFile(path);
+            break;
+        case 2:
+            writeFile(path);
             break;
         case 3:
             isRunning = false;
@@ -68,4 +72,27 @@ int readFile(char *path)
     }
     fclose(fp);
     return 0;
+}
+
+int writeFile(char *path)
+{
+    FILE *wfp;
+    char option = '\0';
+
+    printf("Enter the path to the file you would like to write: ");
+    fgets(path, 1024, stdin);
+    path[strcspn(path, "\n")] = '\0';
+
+    FILE *check = fopen(path, "r");
+
+    if (check != NULL)
+    {
+        printf("File exists. Overwriting:\n");
+        wfp = openfile(path, "w");
+    }
+    else
+    {
+        printf("File does not exist. Create new file at the given directory(y/n)?: ");
+        scanf(" %c", &option);
+    }
 }
