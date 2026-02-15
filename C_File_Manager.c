@@ -9,7 +9,6 @@ int writeFile(char *path);
 int main(void)
 {
 
-    char *input = NULL;
     int choice = 0;
     char path[1024] = {0};
     bool isRunning = true;
@@ -87,12 +86,54 @@ int writeFile(char *path)
 
     if (check != NULL)
     {
-        printf("File exists. Overwriting:\n");
-        wfp = openfile(path, "w");
+        printf("File exists. Overwrite(y/n)?: ");
+        scanf(" %c", &option);
+        getchar();
+
+        if (option != 'y')
+        {
+            printf("Cancelled\n");
+            return 1;
+        }
     }
     else
     {
         printf("File does not exist. Create new file at the given directory(y/n)?: ");
         scanf(" %c", &option);
+        getchar();
+
+        if (option != 'y')
+        {
+            printf("File not created\n");
+            return 1;
+        }
+    }
+
+    wfp = fopen(path, "w");
+
+    if (wfp == NULL)
+    {
+        perror("Failed to open file");
+        return 1;
+    }
+
+    printf("Begin writing (Enter a new line to stop writing):\n");
+
+    char buffer[1024] = "\0";
+
+    while (1)
+    {
+        fgets(buffer, 1024, stdin);
+
+        if (buffer[0] == '\n')
+        {
+            break;
+        }
+
+        fputs(buffer, wfp);
+
+        fclose(wfp);
+        printf("File saved succesfully\n");
+        return 0;
     }
 }
